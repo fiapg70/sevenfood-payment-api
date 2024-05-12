@@ -1,0 +1,8 @@
+2024-05-10 15:57:38,387 INFO com.mercadopago.sample.PixPaymentSampleJavaApplication [main] Starting PixPaymentSampleJavaApplication using Java 17.0.10 with PID 65105 (/home/rogerioz/dev/fiap/pix-payment-sample-java/target/classes started by rogerioz in /home/rogerioz/dev/fiap/pix-payment-sample-java)
+2024-05-10 15:57:38,388 DEBUG com.mercadopago.sample.PixPaymentSampleJavaApplication [main] Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-05-10 15:57:38,390 INFO com.mercadopago.sample.PixPaymentSampleJavaApplication [main] No active profile set, falling back to 1 default profile: "default"
+2024-05-10 15:57:39,830 DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping [main] 4 mappings in 'requestMappingHandlerMapping'
+2024-05-10 15:57:39,853 DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping [main] Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-05-10 15:57:39,913 DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter [main] ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-05-10 15:57:39,936 DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver [main] ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-05-10 15:57:40,062 INFO com.mercadopago.sample.PixPaymentSampleJavaApplication [main] Started PixPaymentSampleJavaApplication in 2.091 seconds (process running for 2.68)

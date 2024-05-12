@@ -1,0 +1,16 @@
+2024-05-10 15:59:23.410 [main] INFO  c.m.s.PixPaymentSampleJavaApplication - Starting PixPaymentSampleJavaApplication using Java 17.0.10 with PID 65398 (/home/rogerioz/dev/fiap/pix-payment-sample-java/target/classes started by rogerioz in /home/rogerioz/dev/fiap/pix-payment-sample-java)
+2024-05-10 15:59:23.411 [main] DEBUG c.m.s.PixPaymentSampleJavaApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-05-10 15:59:23.412 [main] INFO  c.m.s.PixPaymentSampleJavaApplication - No active profile set, falling back to 1 default profile: "default"
+2024-05-10 15:59:24.753 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 4 mappings in 'requestMappingHandlerMapping'
+2024-05-10 15:59:24.774 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-05-10 15:59:24.833 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-05-10 15:59:24.854 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-05-10 15:59:24.969 [main] INFO  c.m.s.PixPaymentSampleJavaApplication - Started PixPaymentSampleJavaApplication in 1.865 seconds (process running for 2.41)
+2024-05-10 16:03:10.772 [main] INFO  c.m.s.PixPaymentSampleJavaApplication - Starting PixPaymentSampleJavaApplication using Java 17.0.10 with PID 66575 (/home/rogerioz/dev/fiap/pix-payment-sample-java/target/classes started by rogerioz in /home/rogerioz/dev/fiap/pix-payment-sample-java)
+2024-05-10 16:03:10.774 [main] DEBUG c.m.s.PixPaymentSampleJavaApplication - Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-05-10 16:03:10.775 [main] INFO  c.m.s.PixPaymentSampleJavaApplication - No active profile set, falling back to 1 default profile: "default"
+2024-05-10 16:03:12.090 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 4 mappings in 'requestMappingHandlerMapping'
+2024-05-10 16:03:12.112 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-05-10 16:03:12.173 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-05-10 16:03:12.197 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-05-10 16:03:12.309 [main] INFO  c.m.s.PixPaymentSampleJavaApplication - Started PixPaymentSampleJavaApplication in 1.898 seconds (process running for 2.58)
