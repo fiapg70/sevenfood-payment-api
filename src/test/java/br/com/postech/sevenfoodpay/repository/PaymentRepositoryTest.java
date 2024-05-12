@@ -2,6 +2,10 @@ package br.com.postech.sevenfoodpay.repository;
 
 import br.com.postech.sevenfoodpay.infraestruture.entities.PaymentEntity;
 import br.com.postech.sevenfoodpay.infraestruture.repository.PaymentRepository;
+import jakarta.validation.ConstraintViolationException;
+import org.apache.commons.collections.IteratorUtils;
+import org.apache.commons.collections.iterators.IteratorEnumeration;
+import org.apache.commons.collections4.iterators.EmptyIterator;
 import org.junit.Assert;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -15,17 +19,19 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.TestPropertySource;
 
+import javax.imageio.metadata.IIOInvalidTreeException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 @DataJpaTest
 @ImportAutoConfiguration(exclude = FlywayAutoConfiguration.class)
-@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestPropertySource("classpath:application-test.properties")
 public class PaymentRepositoryTest {
 
@@ -50,10 +56,19 @@ public class PaymentRepositoryTest {
     }
 
     @Test
-    public void should_find_no_clients_if_repository_is_empty() {
+    public void should_find_no_payments_if_repository_is_not_empty() {
         Iterable<PaymentEntity> paymentEntities = paymentRepository.findAll();
-        paymentEntities = Collections.EMPTY_LIST;
+        paymentEntities.iterator();
         Assert.assertNotNull(paymentEntities);
+    }
+
+    @Test
+    public void should_find_no_payments_if_repository_is_empty() {
+        paymentRepository.deleteAll();
+        Iterable<PaymentEntity> paymentEntities = paymentRepository.findAll();
+        List<PaymentEntity> paymentEntityList = new ArrayList<>();
+        paymentEntities.forEach(paymentEntityList::add);
+        Assert.assertEquals(0, paymentEntityList.size());
     }
 
     @Test
@@ -68,22 +83,24 @@ public class PaymentRepositoryTest {
             paymentRepository.save(paymentEntity);
         }
 
-        //assertThat(client).hasFieldOrPropertyWithValue("name", "Ana Furtado Correia");
-        //assertThat(client).hasFieldOrPropertyWithValue("cpf", "183.417.520-85");
-        assertThat(client).hasFieldOrPropertyWithValue("payment", getPayment());
+        assertThat(client).hasFieldOrPropertyWithValue("paymentStatus", "PENDING");
+        assertThat(client).hasFieldOrPropertyWithValue("clientId", "1");
     }
 
-    @Disabled
+    @Test
+    public void should_find_by_id_no_payments_if_repository_contains_data() {
+        Optional<PaymentEntity> paymentEntities = paymentRepository.findById(1l);
+        Assert.assertNotNull(paymentEntities.get());
+    }
+
+    @Test
     public void whenDerivedExceptionThrown_thenAssertionSucceeds() {
-       /* Exception exception = assertThrows(ConstraintViolationException.class, () -> {
-            PaymentEntity client = getClient();
-            clientRepository.save(client);
+        assertThrows(ConstraintViolationException.class, () -> {
+            PaymentEntity paymentEntity = getPayment();
+            paymentEntity.setClientId(null);
+            entityManager.persist(paymentEntity);
+            entityManager.flush();
         });
-
-        String expectedMessage = "For input string";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));*/
     }
 
 }

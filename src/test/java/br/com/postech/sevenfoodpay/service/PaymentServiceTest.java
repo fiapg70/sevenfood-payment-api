@@ -1,13 +1,18 @@
 package br.com.postech.sevenfoodpay.service;
 
+import br.com.postech.sevenfoodpay.application.api.v1.dto.request.OrderDTO;
+import br.com.postech.sevenfoodpay.application.api.v1.dto.request.PaymentRequest;
+import br.com.postech.sevenfoodpay.application.api.v1.dto.response.ClientResponse;
+import br.com.postech.sevenfoodpay.application.api.v1.dto.response.PaymentResponse;
 import br.com.postech.sevenfoodpay.application.database.mapper.PaymentMapper;
 import br.com.postech.sevenfoodpay.core.domain.PaymentDomain;
 import br.com.postech.sevenfoodpay.core.ports.out.PaymentRepositoryPort;
 import br.com.postech.sevenfoodpay.core.service.PaymentService;
+import br.com.postech.sevenfoodpay.gateway.client.ClientWebClient;
 import br.com.postech.sevenfoodpay.infraestruture.entities.PaymentEntity;
 import br.com.postech.sevenfoodpay.infraestruture.repository.PaymentRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,8 +21,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
@@ -36,6 +43,9 @@ public class PaymentServiceTest {
 
     @Mock
     PaymentMapper mapper;
+
+    @Mock
+    ClientWebClient restClient;
 
     private PaymentEntity getPaymentEntity() {
         return PaymentEntity.builder()
@@ -70,41 +80,39 @@ public class PaymentServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Disabled
-    public void getAllEmployeesTest() {
-        List<PaymentEntity> listEntity = getPaymentEntities();
-        //listEntity.add(clientEntity1);
-        //listEntity.add(clientEntity2);
-
-        when(paymentRepository.findAll()).thenReturn(listEntity);
-        List<PaymentDomain> paymentDomains = mapper.map(listEntity);
-
-        // test
-        //List<PaymentDomain> restaurantList = paymentService.findAll();
-
-        //assertNotNull(restaurantList);
-        //verify(restaurantRepository, times(1)).findAll();
-        assertNotNull(paymentDomains);
-    }
-
-    private List<PaymentEntity> getPaymentEntities() {
-        List<PaymentDomain> list = new ArrayList<>();
-        List<PaymentEntity> listEntity = new ArrayList<>();
-
+    @Test
+    public void savePaymentTest() {
+        List<PaymentDomain> paymentDomainList = List.of(getPaymentoDomain());
         PaymentDomain paymentDomain = getPaymentoDomain();
-        // PaymentoDomain client1 = getPaymentoDomain();
-        //PaymentoDomain client2 = getPaymentoDomain();
 
-        PaymentEntity clientEntity = getPaymentEntity();
-        //PaymentoDomainEntity clientEntity1 = getPaymentoDomainEntity();
-        //PaymentoDomainEntity clientEntity2 = getPaymentoDomainEntity();
+        PaymentEntity paymentEntity = getPaymentEntity();
+        List<PaymentEntity> paymentEntityList = List.of(paymentEntity);
 
-        list.add(paymentDomain);
-        //list.add(client1);
-        //list.add(client2);
+        when(mapper.map(paymentEntityList)).thenReturn(paymentDomainList);
+        when(paymentRepositoryPort.save(getPaymentoDomain())).thenReturn(getPaymentoDomain());
 
-        listEntity.add(clientEntity);
-        return listEntity;
+        when(paymentRepositoryPort.save(getPaymentoDomain())).thenReturn(getPaymentoDomain());
+
+        ClientResponse clientResponse = new ClientResponse("76fb2f44-aaad-4ccd-a685-4b2dd33ef1c2",
+                "John Doe",
+                "Silva",
+                "CPF",
+                "04358243681", "fontestz@gmail.com");
+        when(restClient.getUserById("76fb2f44-aaad-4ccd-a685-4b2dd33ef1c2")).thenReturn(clientResponse);
+
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+        orderDTOList.add(new OrderDTO("ORD-001"));
+        orderDTOList.add(new OrderDTO("ORD-002"));
+
+        PaymentRequest paymentRequest = new PaymentRequest(
+                BigDecimal.valueOf(0.01),
+                "Combo X Salada",
+                "76fb2f44-aaad-4ccd-a685-4b2dd33ef1c2",
+                orderDTOList
+        );
+
+        Optional<PaymentResponse> paymentDomainSaved = paymentService.processPayment(paymentRequest);
+        assertNotNull(paymentDomainSaved.get());
     }
 
 }

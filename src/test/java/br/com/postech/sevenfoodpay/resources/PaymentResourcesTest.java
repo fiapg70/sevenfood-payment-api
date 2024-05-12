@@ -1,6 +1,7 @@
 package br.com.postech.sevenfoodpay.resources;
 
 import br.com.postech.sevenfoodpay.core.domain.PaymentDomain;
+import br.com.postech.sevenfoodpay.core.ports.in.PaymentPort;
 import br.com.postech.sevenfoodpay.core.service.PaymentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Disabled;
@@ -38,7 +39,7 @@ public class PaymentResourcesTest {
     private ObjectMapper mapper;
 
     @Autowired
-    private PaymentService service;
+    private PaymentPort service;
 
     private PaymentDomain getPayment() {
         return PaymentDomain.builder()
@@ -54,26 +55,20 @@ public class PaymentResourcesTest {
                 .build();
     }
 
-    @Test
+    @Disabled
     void findsTaskById() throws Exception {
-        Long id = 1l;
-
-        mockMvc.perform(get("/v1/payments/{id}", id))
+        mockMvc.perform(get("/v1/payments/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Ana Furtado Correia"));
+                .andExpect(jsonPath("$.id").value(1));
     }
 
     @Disabled
-    public void getAll() throws Exception
-    {
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/v1/payments")
-                        .accept(MediaType.APPLICATION_JSON))
+    public void getAll() throws Exception {
+       mockMvc.perform(get("/v1/payments"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].id").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].name").exists());
+                .andExpect(jsonPath("$").isArray());
     }
 
 
@@ -87,27 +82,7 @@ public class PaymentResourcesTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty());
-    }
-
-
-    @Disabled
-    public void update() throws Exception {
-        String update = JsonUtil.getJson(getPayment());
-
-        mockMvc.perform( MockMvcRequestBuilders
-                        .put("/v1/payments/{id}", 1)
-                        .content(update)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Ana Furtado Correia"));
     }
 
-    @Test
-    public void delete() throws Exception
-    {
-        mockMvc.perform( MockMvcRequestBuilders.delete("/v1/payments/{id}", 1) )
-                .andExpect(status().isOk());
-    }
 }

@@ -1,0 +1,90 @@
+{
+  "orders": [
+    {
+      "id": 1,
+      "code": "ORD-001",
+      "products": [
+        {
+          "id": 1,
+          "name": "Product A",
+          "description": "Description of Product A",
+          "price": 10.99,
+          "pic": "https://example.com/productA.jpg",
+          "productCategory": {
+            "id": 1,
+            "name": "Category A"
+          },
+          "restaurant": {
+            "id": 1,
+            "name": "Restaurant X"
+          }
+        },
+        {
+          "id": 2,
+          "name": "Product B",
+          "description": "Description of Product B",
+          "price": 15.99,
+          "pic": "https://example.com/productB.jpg",
+          "productCategory": {
+            "id": 2,
+            "name": "Category B"
+          },
+          "restaurant": {
+            "id": 1,
+            "name": "Restaurant X"
+          }
+        }
+      ],
+      "client": {
+        "id": "76fb2f44-aaad-4ccd-a685-4b2dd33ef1c2",
+        "name": "John Doe",
+        "email": "john.doe@example.com"
+      },
+      "statusPedidoEnum": "PENDING",
+      "paymentEnum": "CREDIT_CARD"
+    },
+    {
+      "id": 2,
+      "code": "ORD-002",
+      "products": [
+        {
+          "id": 1,
+          "name": "Product AC",
+          "description": "Description of Product A",
+          "price": 10.99,
+          "pic": "https://example.com/productA.jpg",
+          "productCategory": {
+            "id": 1,
+            "name": "Category AC"
+          },
+          "restaurant": {
+            "id": 1,
+            "name": "Restaurant X"
+          }
+        },
+        {
+          "id": 2,
+          "name": "Product B",
+          "description": "Description of Product B",
+          "price": 15.99,
+          "pic": "https://example.com/productB.jpg",
+          "productCategory": {
+            "id": 2,
+            "name": "Category BC"
+          },
+          "restaurant": {
+            "id": 1,
+            "name": "Restaurant X"
+          }
+        }
+      ],
+      "client": {
+        "id": "76fb2f44-aaad-4ccd-a685-4b2dd33ef1c2",
+        "name": "John Doe",
+        "email": "john.doe@example.com"
+      },
+      "statusPedidoEnum": "PENDING",
+      "paymentEnum": "CREDIT_CARD"
+    }
+  ]
+}

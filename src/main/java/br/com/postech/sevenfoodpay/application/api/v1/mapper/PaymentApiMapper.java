@@ -20,4 +20,7 @@ public class PaymentApiMapper {
         return new PaymentResponse(paymentDomain.getId(), paymentDomain.getPaymentStatus(), paymentDomain.getPaymentDetails(), paymentDomain.getQrCodeBase64(), paymentDomain.getQrCode());
     }
 
+    public List<PaymentResponse> map(List<PaymentDomain> paymentDomainList) {
+        return paymentDomainList.stream().map(this::toPaymentResponse).toList();
+    }
 }

@@ -1,0 +1,28 @@
+{
+  "clients": [
+    {
+      "id": "76fb2f44-aaad-4ccd-a685-4b2dd33ef1c2",
+      "firstName": "Rogério Fontes",
+      "lastName": "Presunto",
+      "documentType": "CPF",
+      "documentNumber": "333.936.300-59",
+      "email": "presunto@gmail.com"
+    },
+    {
+      "id": "c1f07254-9f19-4746-95af-c36704808544",
+      "firstName": "Maria Oliveira",
+      "lastName": "Silva",
+      "documentType": "CPF",
+      "documentNumber": "222.333.444-55",
+      "email": "maria@example.com"
+    },
+    {
+      "id": "977d7bdd-8f50-480e-ae99-7f217946b8d6",
+      "firstName": "José Santo",
+      "lastName": "Silva",
+      "documentType": "CPF",
+      "documentNumber": "333.444.555-66",
+      "email": "jose@example.com"
+    }
+  ]
+}

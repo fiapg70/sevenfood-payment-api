@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -33,6 +34,7 @@ public class PaymentResource {
     private final PaymentRepositoryPort paymentRepositoryPort;
     private final PaymentApiMapper paymentApiMapper;
 
+    @Autowired
     public PaymentResource(PaymentPort paymentService, PaymentRepositoryPort paymentRepositoryPort, PaymentApiMapper paymentApiMapper) {
         this.paymentService = paymentService;
         this.paymentRepositoryPort = paymentRepositoryPort;
@@ -74,5 +76,22 @@ public class PaymentResource {
         }
 
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Retrieve all Payment", tags = {"clients", "get", "filter"})
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(schema = @Schema(implementation = PaymentResponse.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "204", description = "There are no Payment", content = {
+                    @Content(schema = @Schema())}),
+            @ApiResponse(responseCode = "500", content = {@Content(schema = @Schema())})})
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<PaymentResponse>> findAll() {
+        List<PaymentDomain> paymentDomainList = paymentRepositoryPort.findAll();
+        List<PaymentResponse> clientResponse = paymentApiMapper.map(paymentDomainList);
+        return clientResponse.isEmpty() ?
+                ResponseEntity.noContent().build() :
+                ResponseEntity.ok(clientResponse);
     }
 }

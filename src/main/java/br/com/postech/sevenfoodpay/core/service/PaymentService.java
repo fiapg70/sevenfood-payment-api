@@ -45,6 +45,7 @@ public class PaymentService implements PaymentPort {
     private final OrderWebClient orderWebClient;
     private final PaymentRepositoryPort paymentRepositoryPort;
 
+    @Autowired
     public PaymentService(ClientWebClient restClient, OrderWebClient orderWebClient, PaymentRepositoryPort paymentRepositoryPort) {
         this.restClient = restClient;
         this.orderWebClient = orderWebClient;
