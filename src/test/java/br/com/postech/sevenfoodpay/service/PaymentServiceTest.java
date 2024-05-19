@@ -18,10 +18,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +46,9 @@ public class PaymentServiceTest {
 
     @Mock
     ClientWebClient restClient;
+
+    @Value("${mercado_pago_sample_access_token}")
+    private String mercadoPagoAccessToken;
 
     private PaymentEntity getPaymentEntity() {
         return PaymentEntity.builder()
@@ -82,6 +85,9 @@ public class PaymentServiceTest {
 
     @Test
     public void savePaymentTest() {
+        // Mockando o valor de mercadoPagoAccessToken
+        when(mercadoPagoAccessToken).thenReturn(mercadoPagoAccessToken);
+
         List<PaymentDomain> paymentDomainList = List.of(getPaymentoDomain());
         PaymentDomain paymentDomain = getPaymentoDomain();
 

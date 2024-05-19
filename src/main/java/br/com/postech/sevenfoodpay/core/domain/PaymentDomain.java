@@ -33,5 +33,5 @@ public class PaymentDomain implements Serializable {
 
     private String qrCodeBase64;
 
-    private String orders;
+    private String orderId;
 }

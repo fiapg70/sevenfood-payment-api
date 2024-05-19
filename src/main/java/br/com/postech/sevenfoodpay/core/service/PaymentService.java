@@ -64,9 +64,9 @@ public class PaymentService implements PaymentPort {
 
             Payment createdPayment = paymentClient.create(paymentCreateRequest.getPaymentCreateRequest());
 
-            String orders = paymentCreateRequest.getOrders();
+            String orderId = paymentCreateRequest.getOrderId();
             String clientId = paymentCreateRequest.getClientId();
-            Optional<PaymentResponse> paymentResponse = paymentResponse(createdPayment, clientId, orders);
+            Optional<PaymentResponse> paymentResponse = paymentResponse(createdPayment, clientId, orderId);
 
             if (!paymentResponse.isPresent()) {
                 throw new MercadoPagoException("Payment ntransactionDetails = nullot created");
@@ -83,7 +83,7 @@ public class PaymentService implements PaymentPort {
         }
     }
 
-    private Optional<PaymentResponse> paymentResponse(Payment payment, String clientId, String orders) {
+    private Optional<PaymentResponse> paymentResponse(Payment payment, String clientId, String orderId) {
         try {
             PaymentDomain paymentEntity = PaymentDomain.builder()
                     .clientId(clientId)
@@ -94,7 +94,7 @@ public class PaymentService implements PaymentPort {
                     .paymentAmount(payment.getTransactionAmount())
                     .qrCode(payment.getPointOfInteraction().getTransactionData().getQrCode())
                     .qrCodeBase64(payment.getPointOfInteraction().getTransactionData().getQrCodeBase64())
-                    .orders(orders)
+                    .orderId(orderId)
                     .build();
 
             paymentRepositoryPort.save(paymentEntity);
@@ -116,32 +116,10 @@ public class PaymentService implements PaymentPort {
         ClientResponse clientData = getClientData(clientId);
         log.info("Data: {}", clientData);
 
-        StringBuffer orders = new StringBuffer();
         PayerDTO payer = getPayerDTO(clientData);
-        AtomicReference<BigDecimal> amountTotal = new AtomicReference<>(BigDecimal.ZERO);
-        paymentRequest.orderDTOList().forEach(orderDTO -> {
-            log.info("Order: {}", orderDTO.id());
-
-            List<OrderDTO> order = orderWebClient.getOrderById(orderDTO.id());
-            log.info("Order: {}", order);
-
-            AtomicReference<BigDecimal> amountOrder = new AtomicReference<>(BigDecimal.ZERO);
-            order.forEach(orderDTO1 -> {
-                log.info("Order: {}", orderDTO1);
-                BigDecimal amount = orderDTO1.getProducts().stream()
-                        .map(product -> product.getPrice())
-                        .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-                amountOrder.set(amountOrder.get().add(amount));
-            });
-
-            amountTotal.set(amountTotal.get().add(amountOrder.get()));
-            orders.append(orderDTO.id() + ":");
-        });
-
         PaymentCreateRequest paymentCreateRequest = PaymentCreateRequest.builder()
-                .transactionAmount(amountTotal.get())
-                .description(paymentRequest.productDescription())
+                .transactionAmount(paymentRequest.transactionAmount())
+                .description("Payment for order " + paymentRequest.orderId())
                 .paymentMethodId(PaymentMethod.PIX.getMethod())
                 .payer(
                         getPayer(payer))
@@ -149,7 +127,7 @@ public class PaymentService implements PaymentPort {
 
         return PaymentCreateDTO.builder()
                 .paymentCreateRequest(paymentCreateRequest)
-                .orders(orders.toString())
+                .orderId(paymentRequest.orderId())
                 .clientId(clientId)
                 .build();
     }

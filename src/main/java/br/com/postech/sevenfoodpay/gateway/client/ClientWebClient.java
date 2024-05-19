@@ -4,8 +4,6 @@ import br.com.postech.sevenfoodpay.application.api.v1.dto.response.ClientRespons
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-
-
 @Component
 public class ClientWebClient {
     private final WebClient webClient;

@@ -26,7 +26,7 @@ public class PaymentMapper {
                 .paymentAmount(paymentDomain.getPaymentAmount())
                 .qrCode(paymentDomain.getQrCode())
                 .qrCodeBase64(paymentDomain.getQrCodeBase64())
-                .orders(paymentDomain.getOrders())
+                .orders(paymentDomain.getOrderId())
                 .build();
     }
 
@@ -40,7 +40,7 @@ public class PaymentMapper {
                 .paymentAmount(paymentEntity.getPaymentAmount())
                 .qrCode(paymentEntity.getQrCode())
                 .qrCodeBase64(paymentEntity.getQrCodeBase64())
-                .orders(paymentEntity.getOrders())
+                .orderId(paymentEntity.getOrders())
                 .build();
     }
 

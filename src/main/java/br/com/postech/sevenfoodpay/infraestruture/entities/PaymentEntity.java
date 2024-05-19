@@ -63,6 +63,6 @@ public class PaymentEntity extends AuditDomain {
         this.paymentAmount = paymentDomain.getPaymentAmount();
         this.qrCode = paymentDomain.getQrCode();
         this.qrCodeBase64 = paymentDomain.getQrCodeBase64();
-        this.orders = paymentDomain.getOrders();
+        this.orders = paymentDomain.getOrderId();
     }
 }
