@@ -9,12 +9,12 @@ public class ClientWebClient {
     private final WebClient webClient;
 
     public ClientWebClient(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:4000/").build();
+        this.webClient = webClientBuilder.baseUrl("http://localhost:9992/api/v1").build();
     }
 
-    public ClientResponse getUserById(String id) {
+    public ClientResponse getClientByCode(String clientId) {
         return webClient.get()
-                .uri("clients/{id}", id)
+                .uri("/clients/code/{clientId}", clientId)
                 .retrieve()
                 .bodyToMono(ClientResponse.class)
                 .block();

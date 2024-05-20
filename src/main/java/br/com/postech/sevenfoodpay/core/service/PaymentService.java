@@ -6,6 +6,7 @@ import br.com.postech.sevenfoodpay.application.api.v1.dto.response.PaymentRespon
 import br.com.postech.sevenfoodpay.application.api.v1.resources.PaymentResource;
 import br.com.postech.sevenfoodpay.core.domain.PaymentDomain;
 import br.com.postech.sevenfoodpay.core.ports.out.PaymentRepositoryPort;
+import br.com.postech.sevenfoodpay.gateway.dto.OrderResponse;
 import br.com.postech.sevenfoodpay.infraestruture.repository.PaymentRepository;
 import br.com.postech.sevenfoodpay.commons.exception.MercadoPagoException;
 import br.com.postech.sevenfoodpay.core.dto.*;
@@ -62,7 +63,9 @@ public class PaymentService implements PaymentPort {
             PaymentCreateDTO paymentCreateRequest =
                     getPaymentPix(paymentRequest);
 
-            Payment createdPayment = paymentClient.create(paymentCreateRequest.getPaymentCreateRequest());
+            PaymentCreateRequest paymentCreate = paymentCreateRequest.getPaymentCreateRequest();
+            log.info("PaymentCreateRequest: {}", paymentCreate);
+            Payment createdPayment = paymentClient.create(paymentCreate);
 
             String orderId = paymentCreateRequest.getOrderId();
             String clientId = paymentCreateRequest.getClientId();
@@ -113,12 +116,20 @@ public class PaymentService implements PaymentPort {
 
     private PaymentCreateDTO getPaymentPix(PaymentRequest paymentRequest) {
         String clientId = paymentRequest.clientId();
+
         ClientResponse clientData = getClientData(clientId);
         log.info("Data: {}", clientData);
 
+        String orderId = paymentRequest.orderId();
+        OrderResponse orderData = getOrderData(orderId);
+        log.info("Order: {}", orderData);
+
+        BigDecimal totalPrice = orderData.getTotalPrice();
+        log.info("Total Price: {}", totalPrice);
+
         PayerDTO payer = getPayerDTO(clientData);
         PaymentCreateRequest paymentCreateRequest = PaymentCreateRequest.builder()
-                .transactionAmount(paymentRequest.transactionAmount())
+                .transactionAmount(totalPrice)
                 .description("Payment for order " + paymentRequest.orderId())
                 .paymentMethodId(PaymentMethod.PIX.getMethod())
                 .payer(
@@ -132,19 +143,26 @@ public class PaymentService implements PaymentPort {
                 .build();
     }
 
-    private static PayerDTO getPayerDTO(ClientResponse clientData) {
+    private PayerDTO getPayerDTO(ClientResponse clientData) {
         if (clientData == null) {
             throw new MercadoPagoException("Client not found");
         }
 
         PayerIdentificationDTO identificationDTO = new PayerIdentificationDTO();
-        identificationDTO.setType(clientData.documentType());
-        identificationDTO.setNumber(clientData.documentNumber().replaceAll("[^0-9]", ""));
+        identificationDTO.setType("CPF");
+        identificationDTO.setNumber(clientData.cpf().replaceAll("[^0-9]", ""));
 
         PayerDTO payer = new PayerDTO();
         payer.setEmail(clientData.email());
-        payer.setFirstName(clientData.firstName());
-        payer.setLastName(clientData.lastName());
+
+        String name = clientData.name();
+        String[] names = name.split(" ");
+        var firstName = names[0];
+        var middleName = names.length > 2 ? names[1] : "";
+
+        payer.setFirstName(firstName + " " + middleName);
+        payer.setLastName(names[names.length - 1]);
+
         payer.setIdentification(identificationDTO);
         return payer;
     }
@@ -168,6 +186,10 @@ public class PaymentService implements PaymentPort {
     }
 
     private ClientResponse getClientData(String clientId) {
-        return restClient.getUserById(clientId);
+        return restClient.getClientByCode(clientId);
+    }
+
+    private OrderResponse getOrderData(String orderId) {
+        return orderWebClient.getOrderById(orderId);
     }
 }
