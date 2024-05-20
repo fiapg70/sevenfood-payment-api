@@ -1,68 +1,68 @@
-# Pix payment processing with Checkout API
-[Português](README.pt.md) / [Español](README.es.md)
+# Sevenfood Order API
 
-**:warning: Attention: Pix is a payment method only available in Brazil**
+Essa API serve para rebecer pedidos com a os order e o valor da order para processar o pagamento.
 
-## :computer: Technologies
-- Java 11
-- [Spring Boot](https://spring.io/projects/spring-boot) 2.5.5
-- [Maven](https://maven.apache.org/) (dependency manager)
+## Stack Utilizada
 
-## 💡 Requirements
-- Java 8 or higher (follow the download instructions [here](https://java.com/en/download/help/download_options.html)).
-- [Read our instructions](https://www.mercadopago.com.br/developers/en/guides/overview#bookmark_el_desarrollo_con_c%C3%B3digo) on how to create an application at the Mercado Pago Developer Panel in order to acquire your access token. It will grant you access to Mercado Pago's public APIs.
-- For detailed information about receiving payments with Pix, [please read our guide](https://www.mercadopago.com.br/developers/en/guides/online-payments/checkout-api/other-payment-ways#bookmark_receive_payments_with_pix) at Mercado Pago Developers.
+- Java 17
+- Spring Boot 3
+- Flyway
+- IntelliJ IDEA
+- PostgreSQL 12 (PGAdmin)
+- Docker & Docker Compose
+- Nginx como reverse proxy
+- Swagger (OpenAPI)
+- JUnit 5
+- Mockito
+- Maven
+- Kubernetes (EKS)
 
-## :gear: Installation
-1. Clone the project.
+## Funcionalidades
+
+2. **Pagamento**: Recebe o Pagamento via REST e envia ao mercado pago recebendo o codigo em base 64 do pix.
+4. **Controle de Status**: Gerenciamento do status do pagamento via REST
+
+## Utilização do PostgreSQL
+
+Foi utilizado o PostgreSQL para armazenar os dados. A infraestrutura está contida no repositório: [infra-rds-postgresql](https://github.com/fiapg70/infra-rds-postgresql).
+
+## Como Rodar a API
+
+### Pré-requisitos
+
+- Java 17
+- Docker & Docker Compose
+- Maven
+- PostgreSQL 12
+
+### Passo a Passo
+
+1. **Clone o repositório:**
+
+   ```bash
+   git clone https://github.com/fiapg70/sevenfood-payment-api.git
+   cd sevenfood-payment-api
+
+### Banco de Dados:
+Para rodar o Banco local só rodar o docker compose da pasta postgres, com o comando 
 ```bash
-git clone https://github.com/mercadopago/pix-payment-sample-java.git
-```
+  docker-compose up -d
+Para rodar na AWS, rodar a infra: https://github.com/fiapg70/infra-rds-postgresql
 
-2. Go to the project's folder.
+### Antes de Rodar a Aplicação:
+As variaves necessárias para rodar a aplicação estão na pasta env
+
+### Rodando a Aplicação (Nessa API é necessário passar o TOKEN do Mercado PAGO:
 ```bash
-cd pix-payment-sample-java
-```
+  mvn clean install
+  mvn spring-boot:run -Dspring-boot.run.arguments="--mercado_pago_sample_access_token=YOUR_ACCESS_TOKEN"
 
-3. Run the following command:
+### Acesso à Documentação:
+  Acesse a documentação da API via Swagger em http://localhost:8888/swagger-ui.html.
 
-Linux / MacOS
-```bash
-./mvnw clean install
-```
+:test_tube: Testes
+Nas nossas instruções de teste você encontrará um guia sobre como criar usuários de teste.
+Você deve criar uma chave Pix na conta do vendedor no Mercado Pago (lembre-se de que você pode criar e usar um usuário de teste como vendedor).
+IMPORTANTE: há algumas limitações ao testar este método de pagamento com usuários de teste. Ao criar um pagamento, ele ficará pendente e o código PIX e o código QR correspondentes serão retornados, mas não será possível usar esses códigos para finalizar o fluxo e aprovar o pagamento de teste.
 
-Windows
-```bash
-./mvnw.cmd clean install
-```
 
-## 🌟 How to run it
-1. Run the following command to start the application:
-   
-Linux / MacOS
-```bash
-./mvnw spring-boot:run -Dspring-boot.run.arguments="--mercado_pago_sample_access_token=YOUR_ACCESS_TOKEN"
-``` 
-
-Windows
-```bash
-./mvnw.cmd spring-boot:run -Dspring-boot.run.arguments="--mercado_pago_sample_access_token=YOUR_ACCESS_TOKEN"
-``` 
-
-2. Remember to replace the value of `YOUR_ACCESS_TOKEN` with the corresponding [credential](https://www.mercadopago.com.br/developers/panel) from your account.
-
-3. Navigate to http://localhost:8080 in your browser.
-
-### :test_tube: Testing
-- On our [testing instructions](https://www.mercadopago.com.br/developers/en/guides/online-payments/checkout-api/testing) you'll find a guide on how to create **[test users](https://www.mercadopago.com.br/developers/en/guides/online-payments/checkout-api/testing#bookmark_how_to_create_users)**.
-- You have to [create a Pix key](https://www.mercadopago.com.br/stop/pix) in the seller's account in Mercado Pago (remember you can create and use a test user as a seller).
-- **IMPORTANT:** there are some limitations when testing this payment method with test users. When creating a payment, it will be pending and the corresponding Pix code and QR code will be returned, but it will not be possible to use these codes to end the flow and approve the test payment.
-
-## :handshake: Contributing
-You can contribute to this project by reporting problems and bugs. Before opening an issue, make sure to read our [code of conduct](CODE_OF_CONDUCT.md).
-
-## :bookmark: License
-MIT License. Copyright (c) 2021 - Mercado Pago <br/>
-For more information, see the [LICENSE](LICENSE) file.
-https://medium.com/deno-the-complete-reference/spring-boot-3-2-logging-correlation-bc76216b616a
-https://mkyong.com/spring-boot/spring-boot-logging-example/# sevenfood-payment-api
