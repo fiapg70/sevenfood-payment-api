@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sevenfood-payment-api-svc
+spec:
+  #type: NodePort
+  type: LoadBalancer
+  ports:
+      - protocol: "TCP"
+        port: 9991
+        targetPort: 9991
+  selector:
+    app: sevenfood-payment-api

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sevenfood-payment-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sevenfood-payment-api
+  template:
+    metadata:
+      labels:
+        app: sevenfood-payment-api
+    spec:
+      containers:
+        - name: sevenfood-payment-api-container
+          image: marrani/sevenfood-payment-api:latest
+          ports:
+            - containerPort: 9991
+        
