@@ -150,7 +150,8 @@ public class PaymentService implements PaymentPort {
 
         PayerIdentificationDTO identificationDTO = new PayerIdentificationDTO();
         identificationDTO.setType("CPF");
-        identificationDTO.setNumber(clientData.cpf().replaceAll("[^0-9]", ""));
+        String socialId = clientData.socialId();
+        identificationDTO.setNumber(socialId.replaceAll("[^0-9]", ""));
 
         PayerDTO payer = new PayerDTO();
         payer.setEmail(clientData.email());

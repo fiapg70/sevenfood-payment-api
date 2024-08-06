@@ -1,6 +1,3 @@
 package br.com.postech.sevenfoodpay.application.api.v1.dto.response;
 
-public record ClientResponse(
-        String id, String name, String cpf, String email
-) {
-}
+public record ClientResponse(String id, String name, String email, String code, String description, String pic, String socialId) {}

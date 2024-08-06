@@ -9,7 +9,7 @@ public class ClientWebClient {
     private final WebClient webClient;
 
     public ClientWebClient(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:9992/api/v1").build();
+        this.webClient = webClientBuilder.baseUrl("http://localhost:9914/api/v1").build();
     }
 
     public ClientResponse getClientByCode(String clientId) {
