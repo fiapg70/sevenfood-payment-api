@@ -51,7 +51,7 @@ public class PaymentResourcesTest {
                 .paymentAmount(new BigDecimal(100))
                 .qrCode("123456")
                 .qrCodeBase64("123456")
-                .orders("1")
+                //.orders("1")
                 .build();
     }
 

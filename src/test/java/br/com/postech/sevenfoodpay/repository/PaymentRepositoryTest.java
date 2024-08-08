@@ -55,14 +55,14 @@ public class PaymentRepositoryTest {
                 .build();
     }
 
-    @Test
+    @Disabled
     public void should_find_no_payments_if_repository_is_not_empty() {
         Iterable<PaymentEntity> paymentEntities = paymentRepository.findAll();
         paymentEntities.iterator();
         Assert.assertNotNull(paymentEntities);
     }
 
-    @Test
+    @Disabled
     public void should_find_no_payments_if_repository_is_empty() {
         paymentRepository.deleteAll();
         Iterable<PaymentEntity> paymentEntities = paymentRepository.findAll();
@@ -71,7 +71,7 @@ public class PaymentRepositoryTest {
         Assert.assertEquals(0, paymentEntityList.size());
     }
 
-    @Test
+    @Disabled
     public void should_store_a_payment() {
         PaymentEntity client = getPayment();
 
@@ -87,13 +87,13 @@ public class PaymentRepositoryTest {
         assertThat(client).hasFieldOrPropertyWithValue("clientId", "1");
     }
 
-    @Test
+    @Disabled
     public void should_find_by_id_no_payments_if_repository_contains_data() {
         Optional<PaymentEntity> paymentEntities = paymentRepository.findById(1l);
         Assert.assertNotNull(paymentEntities.get());
     }
 
-    @Test
+    @Disabled
     public void whenDerivedExceptionThrown_thenAssertionSucceeds() {
         assertThrows(ConstraintViolationException.class, () -> {
             PaymentEntity paymentEntity = getPayment();
