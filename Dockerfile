@@ -8,4 +8,4 @@ RUN mvn -B -f pom.xml clean package -DskipTests
 FROM openjdk:17.0.1-jdk-slim
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 9991
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java","-jar","-Dspring.profiles.active=prod","app.jar"]
